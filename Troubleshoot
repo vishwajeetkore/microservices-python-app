@@ -6,6 +6,38 @@ MongoDB version miss match happned
 5 git pull in ec2 worker node
 6 helm chart created
 
+1️⃣ MongoDB version mismatch occurred after upgrading image from mongo:4.0.8 to mongo:6.0/7.0.
+
+2️⃣ Pod entered CrashLoopBackOff due to incompatible WiredTiger storage files.
+
+3️⃣ Error observed: “This version of MongoDB is too recent to start up on the existing data files.”
+
+4️⃣ Root cause identified as old MongoDB 4.0 data present in hostPath /mnt/data.
+
+5️⃣ Deleted existing Helm release using helm uninstall mongodb.
+
+6️⃣ Deleted PersistentVolumeClaim using kubectl delete pvc mongodb-pvc.
+
+7️⃣ Deleted PersistentVolume using kubectl delete pv mongodb-pv.
+
+8️⃣ Connected to Kubernetes worker node EC2 instance.
+
+9️⃣ Verified old data files present inside /mnt/data.
+
+🔟 Manually removed old storage files using sudo rm -rf /mnt/data/*.
+
+1️⃣1️⃣ Updated MongoDB image version in Git repository from mongo:4.0.8 to mongo:6.0.
+
+1️⃣2️⃣ Pulled latest changes on EC2 using git pull origin main.
+
+1️⃣3️⃣ Reinstalled Helm chart using helm install mongodb ..
+
+1️⃣4️⃣ Verified correct image using kubectl describe pod mongodb-0 | grep Image.
+
+1️⃣5️⃣ Confirmed pod status changed to 1/1 Running.
+
+1️⃣6️⃣ Successfully resolved MongoDB storage engine compatibility issue.
+
 =========================================================================================================================================================================
 
 Perfect 👌 I’ll now give you a professional troubleshooting-focused document with deep technical explanation included.
